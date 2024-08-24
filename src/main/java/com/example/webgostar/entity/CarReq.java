@@ -9,5 +9,5 @@ public class CarReq {
 
     private String plateNumber;
 
-    private Long personId;
+    private Long ownerId;
 }

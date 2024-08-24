@@ -11,5 +11,12 @@ public class CarRes {
 
     private String plateNumber;
 
-    private Long personId;
+    private Long ownerId;
+
+    public CarRes(Long carId, String name, String plateNumber, Long ownerId) {
+        this.id = carId;
+        this.name = name;
+        this.plateNumber = plateNumber;
+        this.ownerId = ownerId;
+    }
 }

@@ -15,10 +15,17 @@ public class CarEntity {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "plate_number" , length = 8)
+    @Column(name = "plate_number" , length = 8 , unique = true , nullable = false)
     private String plateNumber;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "person_id")
-    private PersonEntity person;
+    @JoinColumn(name = "owner_id" , nullable = false)
+    private PersonEntity owner;
+
+    public CarEntity(CarReq carReq, PersonEntity owner) {
+        setId(id);
+        this.name = carReq.getName();
+        this.plateNumber = carReq.getPlateNumber();
+        this.owner = owner;
+    }
 }

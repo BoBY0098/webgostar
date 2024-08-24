@@ -11,6 +11,12 @@ import java.util.Optional;
 @Repository
 public interface CarRepository extends JpaRepository<CarEntity, Long> {
 
-    @Query("SELECT ce FROM CarEntity ce WHERE ce.person.id = :personId")
-    public Optional<CarEntity> findByPersonId(@Param("personId") Long personId);
+    @Query("SELECT ce FROM CarEntity ce WHERE ce.owner.id = :ownerId")
+    public Optional<CarEntity> findByPersonId(@Param("ownerId") Long ownerId);
+
+    @Query("SELECT ce FROM CarEntity ce WHERE ce.plateNumber = :plateNumber")
+    public Optional<CarEntity> findByPlateNumber(@Param("plateNumber") String plateNumber);
+
+    @Query("SELECT ce FROM CarEntity ce WHERE ce.id = :carId")
+    public Optional<CarEntity> findByCarId(@Param("carId") Long carId);
 }
