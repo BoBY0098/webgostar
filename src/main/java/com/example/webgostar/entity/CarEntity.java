@@ -15,8 +15,8 @@ public class CarEntity {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "plate" , length = 8)
-    private String plate;
+    @Column(name = "plate_number" , length = 8)
+    private String plateNumber;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "person_id")

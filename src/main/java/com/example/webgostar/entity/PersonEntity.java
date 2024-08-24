@@ -18,6 +18,13 @@ public class PersonEntity {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "national_code" , length = 10 , unique = true)
+    @Column(name = "national_code" , length = 10 , unique = true , nullable = false)
     private Long nationalCode;
+
+    public PersonEntity (PersonReq personReq) {
+        setId(id);
+        this.firstName = personReq.getFirstName();
+        this.lastName = personReq.getLastName();
+        this.nationalCode = personReq.getNationalCode();
+    }
 }

@@ -9,7 +9,7 @@ public class CarRes {
 
     private String name;
 
-    private String plate;
+    private String plateNumber;
 
     private Long personId;
 }
