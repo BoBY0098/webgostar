@@ -1,6 +1,7 @@
 package com.example.webgostar.controller;
 
 import com.example.webgostar.entity.CarEntity;
+import com.example.webgostar.entity.CarFilter;
 import com.example.webgostar.entity.CarReq;
 import com.example.webgostar.entity.CarRes;
 import com.example.webgostar.service.CarService;
@@ -24,9 +25,12 @@ public class CarController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "name") String sortBy,
-            @RequestParam(defaultValue = "asc") String sortDir
-    ){
-        List<CarRes> list = service.getAllCars(page, size, sortBy, sortDir);
+            @RequestParam(defaultValue = "asc") String sortDir,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String plateNumber
+            ){
+        CarFilter carFilter = new CarFilter(name, plateNumber);
+        List<CarRes> list = service.getAllCars(page, size, sortBy, sortDir, carFilter);
         return ResponseEntity.ok(list);
     }
 
