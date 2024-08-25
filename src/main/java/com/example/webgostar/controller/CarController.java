@@ -1,9 +1,11 @@
 package com.example.webgostar.controller;
 
+import com.example.webgostar.entity.CarEntity;
 import com.example.webgostar.entity.CarReq;
 import com.example.webgostar.entity.CarRes;
 import com.example.webgostar.service.CarService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +20,13 @@ public class CarController {
     private final CarService service;
 
     @GetMapping(value = "/getAll" ,consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<CarRes>> getAllCars(){
-        List<CarRes> list = service.getAllCars();
+    public ResponseEntity<List<CarRes>> getAllCars(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "name") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortDir
+    ){
+        List<CarRes> list = service.getAllCars(page, size, sortBy, sortDir);
         return ResponseEntity.ok(list);
     }
 

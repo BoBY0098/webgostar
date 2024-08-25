@@ -8,6 +8,10 @@ import com.example.webgostar.exception.CustomServiceException;
 import com.example.webgostar.repository.CarRepository;
 import com.example.webgostar.repository.PersonRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,8 +31,10 @@ public class PersonService {
         repository.save(newPerson);
     }
 
-    public List<PersonRes> getAllPersons() {
-        List<PersonEntity> personList = repository.findAll();
+    public List<PersonRes> getAllPersons(int page, int size, String sortBy, String sortDir) {
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<PersonEntity> personList = repository.findAll(pageable);
         List<PersonRes> responseList = new ArrayList<>();
         for (PersonEntity person : personList) {
             responseList.add(new PersonRes(person.getId(), person.getFirstName(), person.getLastName(), person.getNationalCode()));

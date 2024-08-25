@@ -6,8 +6,11 @@ import com.example.webgostar.entity.CarRes;
 import com.example.webgostar.entity.PersonEntity;
 import com.example.webgostar.exception.CustomServiceException;
 import com.example.webgostar.repository.CarRepository;
-import com.example.webgostar.repository.PersonRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -28,8 +31,10 @@ public class CarService {
         repository.save(newCar);
     }
 
-    public List<CarRes> getAllCars(){
-        List<CarEntity> carList = repository.findAll();
+    public List<CarRes> getAllCars(int page, int size, String sortBy, String sortDir){
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<CarEntity> carList = repository.findAll(pageable);
         List<CarRes> responseList = new ArrayList<>();
         for (CarEntity car : carList) {
             responseList.add(new CarRes(car.getId(), car.getName(), car.getPlateNumber(), car.getOwner().getId()));
