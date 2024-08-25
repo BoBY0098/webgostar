@@ -1,5 +1,6 @@
 package com.example.webgostar.controller;
 
+import com.example.webgostar.entity.PersonFilter;
 import com.example.webgostar.entity.PersonReq;
 import com.example.webgostar.entity.PersonRes;
 import com.example.webgostar.service.PersonService;
@@ -22,9 +23,13 @@ public class PersonController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "firstName") String sortBy,
-            @RequestParam(defaultValue = "asc") String sortDir
+            @RequestParam(defaultValue = "asc") String sortDir,
+            @RequestParam(required = false) String firstName,
+            @RequestParam(required = false) String lastName,
+            @RequestParam(required = false) Long nationalCode
     ) {
-        List<PersonRes> list = service.getAllPersons(page, size, sortBy, sortDir);
+        PersonFilter personFilter = new PersonFilter(firstName, lastName, nationalCode);
+        List<PersonRes> list = service.getAllPersons(page, size, sortBy, sortDir, personFilter);
         return ResponseEntity.ok(list);
     }
 

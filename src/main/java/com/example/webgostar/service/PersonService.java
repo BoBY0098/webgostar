@@ -1,9 +1,6 @@
 package com.example.webgostar.service;
 
-import com.example.webgostar.entity.CarEntity;
-import com.example.webgostar.entity.PersonEntity;
-import com.example.webgostar.entity.PersonReq;
-import com.example.webgostar.entity.PersonRes;
+import com.example.webgostar.entity.*;
 import com.example.webgostar.exception.CustomServiceException;
 import com.example.webgostar.repository.CarRepository;
 import com.example.webgostar.repository.PersonRepository;
@@ -12,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -31,10 +29,22 @@ public class PersonService {
         repository.save(newPerson);
     }
 
-    public List<PersonRes> getAllPersons(int page, int size, String sortBy, String sortDir) {
+    public List<PersonRes> getAllPersons(int page, int size, String sortBy, String sortDir, PersonFilter personFilter) {
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sort);
-        Page<PersonEntity> personList = repository.findAll(pageable);
+        Specification<PersonEntity> spec = Specification.where(null);
+        if (personFilter.getFirstName() != null && !personFilter.getFirstName().isEmpty()) {
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("firstName"), "%" + personFilter.getFirstName() + "%"));
+        }
+
+        if (personFilter.getLastName() != null && !personFilter.getLastName().isEmpty()) {
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("lastName"), "%" + personFilter.getLastName() + "%"));
+        }
+
+        if (personFilter.getNationalCode() != null) {
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("nationalCode"), personFilter.getNationalCode()));
+        }
+        Page<PersonEntity> personList = repository.findAll(spec, pageable);
         List<PersonRes> responseList = new ArrayList<>();
         for (PersonEntity person : personList) {
             responseList.add(new PersonRes(person.getId(), person.getFirstName(), person.getLastName(), person.getNationalCode()));
