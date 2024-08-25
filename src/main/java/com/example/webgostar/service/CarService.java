@@ -83,7 +83,7 @@ public class CarService {
     public void isPlateNumberExist(String plateNumber) {
         Optional<CarEntity> car = repository.findByPlateNumber(plateNumber);
         if (car.isPresent()) {
-            throw new CustomServiceException("Car is already exist with Plate Number : " + plateNumber);
+            throw new CustomServiceException("Car is already exist with this Plate Number and Owner ID is : " + car.get().getOwner().getId());
         }
     }
 

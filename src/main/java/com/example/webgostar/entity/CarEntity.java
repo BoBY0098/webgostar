@@ -1,11 +1,15 @@
 package com.example.webgostar.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "cars")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class CarEntity {
 
     @Id

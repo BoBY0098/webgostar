@@ -68,7 +68,7 @@ public class PersonService {
     public void isPersonOwner(Long personId) {
         Optional<CarEntity> personCar = carRepository.findByPersonId(personId);
         if (personCar.isPresent()){
-            throw new CustomServiceException("Person is Owner of Car with ID : " + personCar.get().getId());
+            throw new CustomServiceException("Couldn't Delete Person who is Owner of Car with ID : " + personCar.get().getId());
         }
     }
 
