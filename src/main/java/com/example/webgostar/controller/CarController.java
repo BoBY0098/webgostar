@@ -1,12 +1,10 @@
 package com.example.webgostar.controller;
 
-import com.example.webgostar.entity.CarEntity;
 import com.example.webgostar.entity.CarFilter;
 import com.example.webgostar.entity.CarReq;
 import com.example.webgostar.entity.CarRes;
 import com.example.webgostar.service.CarService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
