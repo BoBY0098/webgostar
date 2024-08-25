@@ -10,6 +10,8 @@ import com.example.webgostar.repository.PersonRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,14 +27,23 @@ public class PersonService {
         repository.save(newPerson);
     }
 
+    public List<PersonRes> getAllPersons() {
+        List<PersonEntity> personList = repository.findAll();
+        List<PersonRes> responseList = new ArrayList<>();
+        for (PersonEntity person : personList) {
+            responseList.add(new PersonRes(person.getId(), person.getFirstName(), person.getLastName(), person.getNationalCode()));
+        }
+        return responseList;
+    }
+
     public PersonRes getPerson(Long personId) {
         PersonEntity person = findPersonById(personId);
         return new PersonRes(person.getId() , person.getFirstName() , person.getLastName() , person.getNationalCode());
     }
 
-    public PersonRes updatePerson(Long personId , PersonReq personReq) {
+    public PersonRes updatePerson(PersonReq personReq) {
         validation(personReq);
-        PersonEntity person = findPersonById(personId);
+        PersonEntity person = findPersonById(personReq.getPersonId());
         person.setFirstName(personReq.getFirstName());
         person.setLastName(personReq.getLastName());
         person.setNationalCode(personReq.getNationalCode());

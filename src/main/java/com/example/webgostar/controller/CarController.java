@@ -35,7 +35,7 @@ public class CarController {
         return ResponseEntity.ok("Car Created Successfully");
     }
 
-    @PutMapping(value = "/update/{id}", consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> updateCar(@RequestBody CarReq carReq) {
         service.updateCar(carReq);
         return ResponseEntity.ok("Car Updated Successfully");
