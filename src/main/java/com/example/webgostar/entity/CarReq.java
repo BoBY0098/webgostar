@@ -5,6 +5,8 @@ import lombok.Data;
 @Data
 public class CarReq {
 
+    private Long carId;
+
     private String name;
 
     private String plateNumber;

@@ -10,6 +10,8 @@ import com.example.webgostar.repository.PersonRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,13 +28,22 @@ public class CarService {
         repository.save(newCar);
     }
 
+    public List<CarRes> getAllCars(){
+        List<CarEntity> carList = repository.findAll();
+        List<CarRes> responseList = new ArrayList<>();
+        for (CarEntity car : carList) {
+            responseList.add(new CarRes(car.getId(), car.getName(), car.getPlateNumber(), car.getOwner().getId()));
+        }
+        return responseList;
+    }
+
     public CarRes getCar(Long carId) {
         CarEntity car = findByCarId(carId);
         return new CarRes(car.getId(), car.getName(), car.getPlateNumber(), car.getOwner().getId());
     }
 
-    public CarRes updateCar(Long carId , CarReq carReq) {
-        CarEntity car = findByCarId(carId);
+    public CarRes updateCar(CarReq carReq) {
+        CarEntity car = findByCarId(carReq.getCarId());
         validation(carReq);
         PersonEntity newOwner = personService.findPersonById(carReq.getOwnerId());
         car.setName(carReq.getName());
