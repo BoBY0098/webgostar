@@ -1,4 +1,4 @@
-package com.example.webgostar.entity;
+package com.example.webgostar.model.filter;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

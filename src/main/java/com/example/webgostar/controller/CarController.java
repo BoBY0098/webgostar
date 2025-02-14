@@ -1,8 +1,8 @@
 package com.example.webgostar.controller;
 
-import com.example.webgostar.entity.CarFilter;
-import com.example.webgostar.entity.CarReq;
-import com.example.webgostar.entity.CarRes;
+import com.example.webgostar.model.filter.CarFilter;
+import com.example.webgostar.model.dto.CarRequest;
+import com.example.webgostar.model.dto.CarResponse;
 import com.example.webgostar.service.CarService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -18,8 +18,8 @@ public class CarController {
 
     private final CarService service;
 
-    @GetMapping(value = "/getAll" ,consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<CarRes>> getAllCars(
+    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<CarResponse>> getAllCars(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "name") String sortBy,
@@ -28,25 +28,25 @@ public class CarController {
             @RequestParam(required = false) String plateNumber
             ){
         CarFilter carFilter = new CarFilter(name, plateNumber);
-        List<CarRes> list = service.getAllCars(page, size, sortBy, sortDir, carFilter);
+        List<CarResponse> list = service.getAllCars(page, size, sortBy, sortDir, carFilter);
         return ResponseEntity.ok(list);
     }
 
     @GetMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CarRes> getCar(@PathVariable("id") Long carId) {
-        CarRes car = service.getCar(carId);
+    public ResponseEntity<CarResponse> getCar(@PathVariable("id") Long carId) {
+        CarResponse car = service.getCar(carId);
         return ResponseEntity.ok(car);
     }
 
-    @PostMapping(value = "/save", consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> saveCar(@RequestBody CarReq carReq) {
-        service.saveCar(carReq);
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> saveCar(@RequestBody CarRequest carRequest) {
+        service.saveCar(carRequest);
         return ResponseEntity.ok("Car Created Successfully");
     }
 
-    @PutMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> updateCar(@RequestBody CarReq carReq) {
-        service.updateCar(carReq);
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> updateCar(@RequestBody CarRequest carRequest) {
+        service.updateCar(carRequest);
         return ResponseEntity.ok("Car Updated Successfully");
     }
 

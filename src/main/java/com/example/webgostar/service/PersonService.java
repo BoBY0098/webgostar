@@ -1,7 +1,11 @@
 package com.example.webgostar.service;
 
-import com.example.webgostar.entity.*;
 import com.example.webgostar.exception.CustomServiceException;
+import com.example.webgostar.model.dto.PersonRequest;
+import com.example.webgostar.model.dto.PersonResponse;
+import com.example.webgostar.model.entity.CarEntity;
+import com.example.webgostar.model.entity.PersonEntity;
+import com.example.webgostar.model.filter.PersonFilter;
 import com.example.webgostar.repository.CarRepository;
 import com.example.webgostar.repository.PersonRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,13 +27,13 @@ public class PersonService {
     private final PersonRepository repository;
     private final CarRepository carRepository;
 
-    public void savePerson(PersonReq personReq) {
-        validation(personReq);
-        PersonEntity newPerson = new PersonEntity(personReq);
+    public void savePerson(PersonRequest personRequest) {
+        validation(personRequest);
+        PersonEntity newPerson = new PersonEntity(personRequest);
         repository.save(newPerson);
     }
 
-    public List<PersonRes> getAllPersons(int page, int size, String sortBy, String sortDir, PersonFilter personFilter) {
+    public List<PersonResponse> getAllPersons(int page, int size, String sortBy, String sortDir, PersonFilter personFilter) {
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sort);
         Specification<PersonEntity> spec = Specification.where(null);
@@ -45,26 +49,26 @@ public class PersonService {
             spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("nationalCode"), personFilter.getNationalCode()));
         }
         Page<PersonEntity> personList = repository.findAll(spec, pageable);
-        List<PersonRes> responseList = new ArrayList<>();
+        List<PersonResponse> responseList = new ArrayList<>();
         for (PersonEntity person : personList) {
-            responseList.add(new PersonRes(person.getId(), person.getFirstName(), person.getLastName(), person.getNationalCode()));
+            responseList.add(new PersonResponse(person.getId(), person.getFirstName(), person.getLastName(), person.getNationalCode()));
         }
         return responseList;
     }
 
-    public PersonRes getPerson(Long personId) {
+    public PersonResponse getPerson(Long personId) {
         PersonEntity person = findPersonById(personId);
-        return new PersonRes(person.getId() , person.getFirstName() , person.getLastName() , person.getNationalCode());
+        return new PersonResponse(person.getId() , person.getFirstName() , person.getLastName() , person.getNationalCode());
     }
 
-    public PersonRes updatePerson(PersonReq personReq) {
-        validation(personReq);
-        PersonEntity person = findPersonById(personReq.getPersonId());
-        person.setFirstName(personReq.getFirstName());
-        person.setLastName(personReq.getLastName());
-        person.setNationalCode(personReq.getNationalCode());
+    public PersonResponse updatePerson(PersonRequest personRequest) {
+        validation(personRequest);
+        PersonEntity person = findPersonById(personRequest.getPersonId());
+        person.setFirstName(personRequest.getFirstName());
+        person.setLastName(personRequest.getLastName());
+        person.setNationalCode(personRequest.getNationalCode());
         repository.save(person);
-        return new PersonRes(person.getId() , person.getFirstName() , person.getLastName() , person.getNationalCode());
+        return new PersonResponse(person.getId() , person.getFirstName() , person.getLastName() , person.getNationalCode());
     }
 
     public void deletePerson(Long personId) {
@@ -88,17 +92,17 @@ public class PersonService {
         }
     }
 
-    public void validation(PersonReq personReq) {
-        if (personReq.getNationalCode() == null) {
+    public void validation(PersonRequest personRequest) {
+        if (personRequest.getNationalCode() == null) {
             throw new CustomServiceException("Person National Code Is Null");
         }
-        if (personReq.getFirstName() == null) {
+        if (personRequest.getFirstName() == null) {
             throw new CustomServiceException("First Name Is Null");
         }
-        if (personReq.getLastName() == null) {
+        if (personRequest.getLastName() == null) {
             throw new CustomServiceException("Last Name Is Null");
         }
-        nationalCodeValidation(personReq.getNationalCode());
+        nationalCodeValidation(personRequest.getNationalCode());
     }
 
     public void nationalCodeValidation(Long nationalCode) {

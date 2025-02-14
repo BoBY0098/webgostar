@@ -1,11 +1,11 @@
-package com.example.webgostar.entity;
+package com.example.webgostar.model.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-@AllArgsConstructor
-public class PersonFilter {
+public class PersonRequest {
+
+    private Long personId;
 
     private String firstName;
 

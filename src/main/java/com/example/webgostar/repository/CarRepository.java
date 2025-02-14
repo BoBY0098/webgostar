@@ -1,6 +1,6 @@
 package com.example.webgostar.repository;
 
-import com.example.webgostar.entity.CarEntity;
+import com.example.webgostar.model.entity.CarEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;

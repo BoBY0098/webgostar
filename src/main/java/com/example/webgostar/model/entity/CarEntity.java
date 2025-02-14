@@ -1,5 +1,6 @@
-package com.example.webgostar.entity;
+package com.example.webgostar.model.entity;
 
+import com.example.webgostar.model.dto.CarRequest;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -31,10 +32,10 @@ public class CarEntity {
     @Column(name = "owner_id" , insertable = false, updatable = false)
     private Long ownerId;
 
-    public CarEntity(CarReq carReq) {
+    public CarEntity(CarRequest carRequest) {
         setId(id);
-        this.name = carReq.getName();
-        this.plateNumber = carReq.getPlateNumber();
-        this.owner = new PersonEntity(carReq.getOwnerId());
+        this.name = carRequest.getName();
+        this.plateNumber = carRequest.getPlateNumber();
+        this.owner = new PersonEntity(carRequest.getOwnerId());
     }
 }

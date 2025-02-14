@@ -1,9 +1,9 @@
-package com.example.webgostar.entity;
+package com.example.webgostar.model.dto;
 
 import lombok.Data;
 
 @Data
-public class CarReq {
+public class CarRequest {
 
     private Long carId;
 

@@ -1,9 +1,9 @@
-package com.example.webgostar.entity;
+package com.example.webgostar.model.dto;
 
 import lombok.Data;
 
 @Data
-public class PersonRes {
+public class PersonResponse {
 
     private Long id;
 
@@ -13,7 +13,7 @@ public class PersonRes {
 
     private Long nationalCode;
 
-    public PersonRes (Long personId , String firstName , String lastName , Long nationalCode) {
+    public PersonResponse(Long personId , String firstName , String lastName , Long nationalCode) {
         this.id = personId;
         this.firstName = firstName;
         this.lastName = lastName;
