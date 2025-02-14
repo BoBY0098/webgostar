@@ -4,6 +4,7 @@ import com.example.webgostar.entity.*;
 import com.example.webgostar.exception.CustomServiceException;
 import com.example.webgostar.repository.CarRepository;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -24,9 +25,12 @@ public class CarService {
 
     public void saveCar(CarReq carReq) {
         validation(carReq);
-        PersonEntity owner = personService.findPersonById(carReq.getOwnerId());
-        CarEntity newCar = new CarEntity(carReq, owner);
-        repository.save(newCar);
+        try {
+            CarEntity newCar = new CarEntity(carReq);
+            repository.save(newCar);
+        } catch (Exception e) {
+            throw new CustomServiceException("Invalid ownerId: " + carReq.getOwnerId());
+        }
     }
 
     public List<CarRes> getAllCars(int page, int size, String sortBy, String sortDir, CarFilter carFilter){

@@ -23,15 +23,18 @@ public class CarEntity {
     @Column(name = "plate_number" , length = 8 , unique = true , nullable = false)
     private String plateNumber;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id" , nullable = false)
     @JsonIgnore
     private PersonEntity owner;
 
-    public CarEntity(CarReq carReq, PersonEntity owner) {
+    @Column(name = "owner_id" , insertable = false, updatable = false)
+    private Long ownerId;
+
+    public CarEntity(CarReq carReq) {
         setId(id);
         this.name = carReq.getName();
         this.plateNumber = carReq.getPlateNumber();
-        this.owner = owner;
+        this.owner = new PersonEntity(carReq.getOwnerId());
     }
 }

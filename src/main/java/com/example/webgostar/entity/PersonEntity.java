@@ -31,4 +31,8 @@ public class PersonEntity {
         this.lastName = personReq.getLastName();
         this.nationalCode = personReq.getNationalCode();
     }
+
+    public PersonEntity(Long ownerId) {
+        setId(ownerId);
+    }
 }
