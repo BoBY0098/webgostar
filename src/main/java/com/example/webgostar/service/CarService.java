@@ -36,9 +36,9 @@ public class CarService {
         }
     }
 
-    public List<CarResponse> getAllCars(int page, int size, String sortBy, String sortDir, CarFilter carFilter){
-        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
-        Pageable pageable = PageRequest.of(page, size, sort);
+    public List<CarResponse> getAllCars(CarFilter carFilter){
+        Sort sort = carFilter.getSortDir().equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(carFilter.getSortBy()).ascending() : Sort.by(carFilter.getSortBy()).descending();
+        Pageable pageable = PageRequest.of(carFilter.getPage(), carFilter.getSize(), sort);
         Specification<CarEntity> spec = Specification.where(null);
         if (carFilter.getName() != null && !carFilter.getName().isEmpty()) {
             spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("name"), "%" + carFilter.getName() + "%"));

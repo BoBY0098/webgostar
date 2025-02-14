@@ -18,21 +18,13 @@ public class CarController {
 
     private final CarService service;
 
-    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<CarResponse>> getAllCars(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "name") String sortBy,
-            @RequestParam(defaultValue = "asc") String sortDir,
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String plateNumber
-            ){
-        CarFilter carFilter = new CarFilter(name, plateNumber);
-        List<CarResponse> list = service.getAllCars(page, size, sortBy, sortDir, carFilter);
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<CarResponse>> getAllCars(CarFilter carFilter){
+        List<CarResponse> list = service.getAllCars(carFilter);
         return ResponseEntity.ok(list);
     }
 
-    @GetMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CarResponse> getCar(@PathVariable("id") Long carId) {
         CarResponse car = service.getCar(carId);
         return ResponseEntity.ok(car);
