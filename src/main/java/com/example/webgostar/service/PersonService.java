@@ -33,9 +33,9 @@ public class PersonService {
         repository.save(newPerson);
     }
 
-    public List<PersonResponse> getAllPersons(int page, int size, String sortBy, String sortDir, PersonFilter personFilter) {
-        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
-        Pageable pageable = PageRequest.of(page, size, sort);
+    public List<PersonResponse> getAllPersons(PersonFilter personFilter) {
+        Sort sort = personFilter.getSortDir().equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(personFilter.getSortBy()).ascending() : Sort.by(personFilter.getSortBy()).descending();
+        Pageable pageable = PageRequest.of(personFilter.getPage(), personFilter.getSize(), sort);
         Specification<PersonEntity> spec = Specification.where(null);
         if (personFilter.getFirstName() != null && !personFilter.getFirstName().isEmpty()) {
             spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("firstName"), "%" + personFilter.getFirstName() + "%"));

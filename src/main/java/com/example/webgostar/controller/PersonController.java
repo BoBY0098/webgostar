@@ -19,17 +19,8 @@ public class PersonController {
     private final PersonService service;
 
     @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<PersonResponse>> getAllPersons(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "firstName") String sortBy,
-            @RequestParam(defaultValue = "asc") String sortDir,
-            @RequestParam(required = false) String firstName,
-            @RequestParam(required = false) String lastName,
-            @RequestParam(required = false) Long nationalCode
-    ) {
-        PersonFilter personFilter = new PersonFilter(firstName, lastName, nationalCode);
-        List<PersonResponse> list = service.getAllPersons(page, size, sortBy, sortDir, personFilter);
+    public ResponseEntity<List<PersonResponse>> getAllPersons(PersonFilter personFilter) {
+        List<PersonResponse> list = service.getAllPersons(personFilter);
         return ResponseEntity.ok(list);
     }
 
